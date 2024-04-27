@@ -1,4 +1,0 @@
-streamlit
-nltk
-scikit-learn
-matplotlib==3.4.3
