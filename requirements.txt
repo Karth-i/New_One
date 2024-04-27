@@ -1,0 +1,5 @@
+streamlit
+nltk
+scikit-learn
+matplotlib==3.4.3
+transformers==3.0.2
