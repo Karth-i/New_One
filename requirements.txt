@@ -4,4 +4,4 @@ scikit-learn
 matplotlib==3.4.3
 transformers==2.11.0
 torch
-tokenizers==0.10.2
+tokenizers==0.8.1.rc1
