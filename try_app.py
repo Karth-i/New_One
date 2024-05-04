@@ -27,8 +27,19 @@ except Exception as e:
     st.write(f"Error loading the model: {e}")
     st.stop()
 
+# Download and extract GloVe embeddings zip file
+glove_embeddings_zip_url = "https://drive.google.com/uc?id=1TjLxcfNftWXcIiQ3-DaIXYjWLHUPLYgm"
+glove_dir = "glove"
+
+response = requests.get(glove_embeddings_zip_url)
+with open("glove.zip", "wb") as f:
+    f.write(response.content)
+
+with zipfile.ZipFile("glove.zip", 'r') as zip_ref:
+    zip_ref.extractall(glove_dir)
+
 # Load GloVe embeddings
-path_to_glove_file = "glove.6B.50d.txt"
+path_to_glove_file = os.path.join(glove_dir, "glove.6B.50d.txt")
 embeddings_index = {}
 with open(path_to_glove_file) as f:
     for line in f:
