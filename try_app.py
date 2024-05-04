@@ -9,26 +9,22 @@ import os
 import requests
 
 # Download and extract the model zip file
-model_zip_url = "https://github.com/Karth-i/New_One/raw/main/model1-20240504T081214Z-001.zip"
+model_h5_url = "https://github.com/Karth-i/New_One/raw/main/model1.h5"
 model_dir = "model1"
 
-response = requests.get(model_zip_url)
-with open("model1.zip", "wb") as f:
+response = requests.get(model_h5_url)
+with open("model1.h5", "wb") as f:
     f.write(response.content)
 
-with zipfile.ZipFile("model1.zip", 'r') as zip_ref:
-    zip_ref.extractall(model_dir)
-
 # Load model
-model_path = os.path.join(model_dir, "model1")  # Assuming "model1" is the name of your model file
 try:
-    loaded_model = keras.models.load_model(model_path)
+    loaded_model = keras.models.load_model("model1.h5")
 except Exception as e:
     st.write(f"Error loading the model: {e}")
     st.stop()
 
 # Download and extract GloVe embeddings zip file
-glove_embeddings_zip_url = "https://drive.google.com/uc?id=1TjLxcfNftWXcIiQ3-DaIXYjWLHUPLYgm"
+glove_embeddings_zip_url = "https://github.com/Karth-i/New_One/raw/main/glove.6B.50d.txt.zip"
 glove_dir = "glove"
 
 response = requests.get(glove_embeddings_zip_url)
