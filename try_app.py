@@ -5,14 +5,11 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.layers import Embedding
-from google.colab import drive
 import os
+import zipfile
 
-# Mount Google Drive
-drive.mount('/content/drive')
+model_zip_path = 
 
-# Load model
-model_path = '/content/drive/MyDrive/your_folder/model1'
 try:
     loaded_model = keras.models.load_model(model_path)
 except Exception as e:
