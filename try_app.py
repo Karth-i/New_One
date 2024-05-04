@@ -7,6 +7,10 @@ from tensorflow import keras
 import zipfile
 import os
 import requests
+from keras.initializers import glorot_uniform, Orthogonal
+
+# Set custom objects for initializers
+custom_objects = {'Orthogonal': Orthogonal, 'glorot_uniform': glorot_uniform}
 
 # Download and extract the model zip file
 model_h5_url = "https://github.com/Karth-i/New_One/raw/main/model1.h5"
@@ -18,7 +22,7 @@ with open("model1.h5", "wb") as f:
 
 # Load model
 try:
-    loaded_model = keras.models.load_model("model1.h5")
+    loaded_model = keras.models.load_model("model1.h5", custom_objects=custom_objects)
 except Exception as e:
     st.write(f"Error loading the model: {e}")
     st.stop()
@@ -60,12 +64,11 @@ def predict_sentiment(message):
     vectorize_layer = tf.keras.layers.TextVectorization(
         max_tokens=max_words,
         output_mode='int',
-        output_sequence_length=maxlen,
-        input_shape = (1,)
+        output_sequence_length=maxlen
     )
 
     # Adapt the layer to the new message
-    vectorize_layer.adapt(tf.data.Dataset.from_tensor_slices([message]).batch(1))
+    vectorize_layer.adapt([message])
 
     # Convert the message into numerical vectors
     message_vectors = vectorize_layer([message])
