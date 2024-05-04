@@ -4,12 +4,23 @@ from collections import defaultdict
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.layers import Embedding
-import os
 import zipfile
+import os
+import requests
 
-model_zip_path = 
+# Download and extract the model zip file
+model_zip_url = "https://github.com/Karth-i/New_One/raw/main/model1-20240504T081214Z-001.zip"
+model_dir = "model1"
 
+response = requests.get(model_zip_url)
+with open("model1.zip", "wb") as f:
+    f.write(response.content)
+
+with zipfile.ZipFile("model1.zip", 'r') as zip_ref:
+    zip_ref.extractall(model_dir)
+
+# Load model
+model_path = os.path.join(model_dir, "model1")  # Assuming "model1" is the name of your model file
 try:
     loaded_model = keras.models.load_model(model_path)
 except Exception as e:
@@ -17,7 +28,7 @@ except Exception as e:
     st.stop()
 
 # Load GloVe embeddings
-path_to_glove_file = "/content/glove.6B.50d.txt"
+path_to_glove_file = "glove.6B.50d.txt"
 embeddings_index = {}
 with open(path_to_glove_file) as f:
     for line in f:
@@ -121,4 +132,3 @@ if uploaded_file is not None:
     # Perform sentiment analysis on the selected user's messages
     for message in messages:
         st.write(f"Message: {message} - Sentiment: {predict_sentiment(message)}")
-
