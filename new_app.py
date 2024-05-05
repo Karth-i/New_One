@@ -52,7 +52,7 @@ def process_whatsapp_file(file_path):
 # Load the pre-trained model from GitHub
 @st.cache(allow_output_mutation=True)
 def load_model_from_github():
-    model_url = 'https://github.com/YOUR_USERNAME/YOUR_REPOSITORY/raw/main/model.h5'
+    model_url = 'https://github.com/Karth-i/New_One/blob/main/model1.h5'
     model = tf.keras.models.load_model(model_url)
     return model
 
