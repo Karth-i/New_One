@@ -6,7 +6,7 @@ import re
 from collections import defaultdict
 import nltk
 
-nltk.download('punkt')
+#nltk.download('punkt')
 
 # Function to extract English words from a text
 def extract_english_words(text):
