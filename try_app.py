@@ -22,7 +22,8 @@ with open("model1.h5", "wb") as f:
 
 # Load model
 try:
-    loaded_model = keras.models.load_model("model1.h5", custom_objects=custom_objects)
+    # loaded_model = keras.models.load_model("model1.h5", custom_objects=custom_objects)
+    loaded_model = keras.models.load_model("model1.h5", custom_objects={'GRU': GRU})
 except Exception as e:
     st.write(f"Error loading the model: {e}")
     st.stop()
