@@ -11,7 +11,8 @@ from tensorflow.keras.layers import Embedding
 
 model_path = 'https://github.com/Karth-i/New_One/blob/main/model1.h5'
 
-path_to_glove_file = "/content/glove.6B.50d.txt"
+path_to_glove_file = "https://github.com/Karth-i/New_One/raw/main/glove.6B.50d.txt.zip"
+glove_dir = "glove"
 embeddings_index = {}
 with open(path_to_glove_file) as f:
     for line in f:
