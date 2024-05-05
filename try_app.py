@@ -10,7 +10,7 @@ import requests
 from keras.initializers import glorot_uniform, Orthogonal
 
 # Set custom objects for initializers
-custom_objects = {'Orthogonal': Orthogonal, 'glorot_uniform': glorot_uniform,'tf'= tf}
+custom_objects = {'Orthogonal': Orthogonal, 'glorot_uniform': glorot_uniform,'tf': tf}
 
 # Download and extract the model zip file
 model_h5_url = "https://github.com/Karth-i/New_One/raw/main/model1.h5"
