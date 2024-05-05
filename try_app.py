@@ -8,13 +8,12 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Embedding, Bidirectional, GRU, GlobalMaxPooling1D, Dropout
 from tensorflow.keras.callbacks import EarlyStopping
-import zipfile
 import os
 import requests
 
 # Download the model and GloVe embeddings
 model_h5_url = "https://github.com/Karth-i/New_One/raw/main/model1.h5"
-glove_embeddings_zip_url = "https://github.com/Karth-i/New_One/raw/main/glove.6B.50d.txt.zip"
+glove_embeddings_url = "https://github.com/Karth-i/New_One/raw/main/glove.6B.50d.txt"
 
 model_dir = "model1"
 glove_dir = "glove"
@@ -23,21 +22,17 @@ response = requests.get(model_h5_url)
 with open("model1.h5", "wb") as f:
     f.write(response.content)
 
-response = requests.get(glove_embeddings_zip_url)
-with open("glove.zip", "wb") as f:
+response = requests.get(glove_embeddings_url)
+with open("glove.6B.50d.txt", "wb") as f:
     f.write(response.content)
 
-# Extract GloVe embeddings
-with zipfile.ZipFile("glove.zip", 'r') as zip_ref:
-    zip_ref.extractall(glove_dir)
-
 # Load GloVe embeddings
-path_to_glove_file = os.path.join(glove_dir, "glove.6B.50d.txt")
 embeddings_index = {}
-with open(path_to_glove_file) as f:
+with open("glove.6B.50d.txt") as f:
     for line in f:
-        word, coefs = line.split(maxsplit=1)
-        coefs = np.fromstring(coefs, "f", sep=" ")
+        values = line.split()
+        word = values[0]
+        coefs = np.asarray(values[1:], dtype='float32')
         embeddings_index[word] = coefs
 
 # Load the model
