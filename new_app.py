@@ -75,6 +75,7 @@ def main():
             model = tf.keras.models.load_model("model.h5", compile=False)
             for layer in model.layers:
                 if isinstance(layer, tf.keras.layers.GRU):
+                    layer.reset_states()
                     layer.recurrent_initializer = 'glorot_uniform'
 
             # Fetch and preprocess messages
