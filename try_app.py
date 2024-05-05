@@ -10,7 +10,7 @@ import requests
 from keras.initializers import glorot_uniform, Orthogonal
 
 # Set custom objects for initializers
-custom_objects = {'Orthogonal': Orthogonal, 'glorot_uniform': glorot_uniform,'GRU': GRU}
+custom_objects = {'Orthogonal': Orthogonal, 'glorot_uniform': glorot_uniform}
 
 # Download and extract the model zip file
 model_h5_url = "https://github.com/Karth-i/New_One/raw/main/model1.h5"
@@ -23,7 +23,6 @@ with open("model1.h5", "wb") as f:
 # Load model
 try:
     loaded_model = keras.models.load_model("model1.h5", custom_objects=custom_objects)
-    # loaded_model = keras.models.load_model("model1.h5", custom_objects={'GRU': GRU})
 except Exception as e:
     st.write(f"Error loading the model: {e}")
     st.stop()
