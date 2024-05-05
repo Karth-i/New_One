@@ -69,7 +69,7 @@ def main():
             response = requests.get(model_url)
             with open("model.h5", "wb") as f:
                 f.write(response.content)
-            model = tf.keras.models.load_model("model.h5", custom_objects={"GRU": tf.keras.layers.GRU})
+            model = tf.keras.models.load_model("model.h5", custom_objects={"Bidirectional": tf.keras.layers.Bidirectional})
 
             # Fetch and preprocess messages
             messages = user_messages[selected_user]
