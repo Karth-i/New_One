@@ -4,7 +4,6 @@ import numpy as np
 import re
 from collections import defaultdict
 import requests
-import os
 
 # Function to extract English words from a text
 def extract_english_words(text):
@@ -70,14 +69,7 @@ def main():
             response = requests.get(model_url)
             with open("model.h5", "wb") as f:
                 f.write(response.content)
-            
-            # Load model
-            model = tf.keras.models.load_model("model.h5", compile=False)
-
-            # Fix the recurrent_initializer issue
-            for layer in model.layers:
-                if isinstance(layer, tf.keras.layers.GRU):
-                    layer.recurrent_initializer = 'glorot_uniform'
+            model = tf.keras.models.load_model("model.h5", custom_objects={"GRU": tf.keras.layers.GRU})
 
             # Fetch and preprocess messages
             messages = user_messages[selected_user]
