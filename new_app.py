@@ -6,6 +6,7 @@ import re
 from collections import defaultdict
 import requests
 import io
+import os
 
 # Function to extract English words from a text
 def extract_english_words(text):
@@ -69,8 +70,11 @@ def main():
             # Load model
             model_url = 'https://github.com/YOUR_USERNAME/YOUR_REPOSITORY/raw/main/model.h5'
             response = requests.get(model_url)
-            model = tf.keras.models.load_model(io.BytesIO(response.content))
-            model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+            temp_model_path = "temp_model.h5"
+            with open(temp_model_path, 'wb') as f:
+                f.write(response.content)
+            model = tf.keras.models.load_model(temp_model_path)
+            os.remove(temp_model_path)
 
             # Fetch and preprocess messages
             messages = user_messages[selected_user]
