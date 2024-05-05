@@ -65,11 +65,11 @@ def main():
             st.subheader(f"Sentiment Analysis for {selected_user}'s messages")
 
             # Load model
-            model_url = "https://github.com/Karth-i/New_One/raw/9ba3e1c71a83bf70df186c342b837a9745721849/model1"
+            model_url = "https://github.com/Karth-i/New_One/raw/9ba3e1c71a83bf70df186c342b837a9745721849/model1.h5"
             response = requests.get(model_url)
-            with open("model", "wb") as f:
+            with open("model.h5", "wb") as f:
                 f.write(response.content)
-            model = tf.saved_model.load("model")
+            model = tf.keras.models.load_model("model.h5")
 
             # Fetch and preprocess messages
             messages = user_messages[selected_user]
