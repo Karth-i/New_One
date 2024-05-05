@@ -9,7 +9,6 @@ import os
 import requests
 
 # Set custom objects for initializers
-custom_objects = {'Orthogonal': tf.keras.initializers.Orthogonal, 'glorot_uniform': tf.keras.initializers.glorot_uniform, 'tf': tf, 'bigru': tf.keras.layers.GRU}
 
 # Download and extract the model zip file
 model_h5_url = "https://github.com/Karth-i/New_One/raw/main/model1.h5"
