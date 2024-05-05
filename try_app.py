@@ -18,7 +18,7 @@ with open("model1.h5", "wb") as f:
 
 # Load model with custom objects
 try:
-    loaded_model = keras.models.load_model("model1.h5", custom_objects={"Orthogonal": tf.keras.initializers.Orthogonal}, compile=False)
+    loaded_model = keras.models.load_model("model1.h5", custom_objects={"Orthogonal": tf.keras.initializers.Orthogonal, "Bidirectional": tf.keras.layers.Bidirectional}, compile=False)
 except Exception as e:
     st.write(f"Error loading the model: {e}")
     st.stop()
