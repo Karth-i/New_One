@@ -4,4 +4,4 @@ tensorflow
 transformers
 torch
 tokenizers
-GRU
+gru
