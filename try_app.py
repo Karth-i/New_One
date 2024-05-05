@@ -16,9 +16,9 @@ response = requests.get(model_h5_url)
 with open("model1.h5", "wb") as f:
     f.write(response.content)
 
-# Load model
+# Load model with custom objects
 try:
-    loaded_model = keras.models.load_model("model1.h5")
+    loaded_model = keras.models.load_model("model1.h5", custom_objects={"Orthogonal": tf.keras.initializers.Orthogonal}, compile=False)
 except Exception as e:
     st.write(f"Error loading the model: {e}")
     st.stop()
