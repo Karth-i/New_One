@@ -67,7 +67,7 @@ def main():
             st.subheader(f"Sentiment Analysis for {selected_user}'s messages")
 
             # Load model
-            model_url = 'https://github.com/YOUR_USERNAME/YOUR_REPOSITORY/raw/main/model.h5'
+            model_url = '###############'
             response = requests.get(model_url)
             model = tf.keras.models.load_model(io.BytesIO(response.content), compile=False)
 
