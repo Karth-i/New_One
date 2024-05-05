@@ -69,7 +69,7 @@ def main():
             response = requests.get(model_url)
             with open("model.h5", "wb") as f:
                 f.write(response.content)
-            model = tf.keras.models.load_model("model.h5", custom_objects={"Bidirectional": tf.keras.layers.Bidirectional})
+            model = tf.keras.models.load_model("model.h5")
 
             # Fetch and preprocess messages
             messages = user_messages[selected_user]
@@ -84,13 +84,14 @@ def main():
 
             # Predict sentiment
             sequences = vectorize_layer([" ".join(messages)])
+            if sequences.shape[1] < 200:
+                sequences = tf.pad(sequences, [[0, 0], [0, 200 - sequences.shape[1]]])
+            elif sequences.shape[1] > 200:
+                sequences = sequences[:, :200]
             sentiment_label = np.argmax(model.predict(sequences), axis=1)
 
             st.write(f"Predicted sentiment label: {sentiment_label[0]}")
 
-class CustomGRUCell(tf.keras.layers.GRUCell):
-    def __init__(self, units, recurrent_initializer='glorot_uniform', **kwargs):
-        super().__init__(units, recurrent_initializer=recurrent_initializer, **kwargs)
 # Run the main function
 if __name__ == '__main__':
     main()
