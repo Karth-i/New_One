@@ -69,7 +69,8 @@ def main():
             # Load model
             model_url = 'https://github.com/YOUR_USERNAME/YOUR_REPOSITORY/raw/main/model.h5'
             response = requests.get(model_url)
-            model = tf.keras.models.load_model(io.BytesIO(response.content), compile=False)
+            model = tf.keras.models.load_model(io.BytesIO(response.content))
+            model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
             # Fetch and preprocess messages
             messages = user_messages[selected_user]
