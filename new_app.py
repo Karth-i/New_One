@@ -5,7 +5,7 @@ import pandas as pd
 import re
 from collections import defaultdict
 import requests
-import os
+import io
 
 # Function to extract English words from a text
 def extract_english_words(text):
@@ -69,10 +69,7 @@ def main():
             # Load model
             model_url = 'https://github.com/YOUR_USERNAME/YOUR_REPOSITORY/raw/main/model.h5'
             response = requests.get(model_url)
-            model_path = "model.h5"
-            with open(model_path, 'wb') as f:
-                f.write(response.content)
-            model = tf.keras.models.load_model(model_path)
+            model = tf.keras.models.load_model(io.BytesIO(response.content), compile=False)
 
             # Fetch and preprocess messages
             messages = user_messages[selected_user]
@@ -90,9 +87,6 @@ def main():
             sentiment_label = np.argmax(model.predict(sequences), axis=1)
 
             st.write(f"Predicted sentiment label: {sentiment_label[0]}")
-
-            # Delete the model file
-            os.remove(model_path)
 
 # Run the main function
 if __name__ == '__main__':
