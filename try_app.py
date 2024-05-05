@@ -3,34 +3,31 @@ import re
 from collections import defaultdict
 import numpy as np
 import tensorflow as tf
-from tensorflow import keras
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Embedding, Bidirectional, GRU, GlobalMaxPooling1D, Dropout
+from tensorflow.keras.callbacks import EarlyStopping
 import zipfile
 import os
 import requests
 
-# Download and extract the model zip file
+# Download the model and GloVe embeddings
 model_h5_url = "https://github.com/Karth-i/New_One/raw/main/model1.h5"
+glove_embeddings_zip_url = "https://github.com/Karth-i/New_One/raw/main/glove.6B.50d.txt.zip"
+
 model_dir = "model1"
+glove_dir = "glove"
 
 response = requests.get(model_h5_url)
 with open("model1.h5", "wb") as f:
     f.write(response.content)
 
-# Load model with custom objects
-try:
-    loaded_model = keras.models.load_model("model1.h5", custom_objects={"Orthogonal": tf.keras.initializers.Orthogonal, "Bidirectional": tf.keras.layers.Bidirectional}, compile=False)
-except Exception as e:
-    st.write(f"Error loading the model: {e}")
-    st.stop()
-
-# Download and extract GloVe embeddings zip file
-glove_embeddings_zip_url = "https://github.com/Karth-i/New_One/raw/main/glove.6B.50d.txt.zip"
-glove_dir = "glove"
-
 response = requests.get(glove_embeddings_zip_url)
 with open("glove.zip", "wb") as f:
     f.write(response.content)
 
+# Extract GloVe embeddings
 with zipfile.ZipFile("glove.zip", 'r') as zip_ref:
     zip_ref.extractall(glove_dir)
 
@@ -43,39 +40,28 @@ with open(path_to_glove_file) as f:
         coefs = np.fromstring(coefs, "f", sep=" ")
         embeddings_index[word] = coefs
 
+# Load the model
+loaded_model = tf.keras.models.load_model("model1.h5")
+
 # Define text preprocessing function
-def extract_english_words(text):
-    english_words = []
-    # Regular expression pattern to match English words
-    english_pattern = re.compile(r'\b[a-zA-Z]+\b')
-    # Find all English words in the text
-    english_words = english_pattern.findall(text)
-    return english_words
+def preprocess_text(text):
+    text = text.lower()  # Convert text to lowercase
+    text = re.sub(r'\d+', '', text)  # Remove numbers
+    text = re.sub(r'http\S+', '', text)  # Remove links
+    return text
 
 # Define sentiment analysis function
 def predict_sentiment(message):
     max_words = 9000
     maxlen = 200
 
-    # Define TextVectorization layer
-    vectorize_layer = tf.keras.layers.TextVectorization(
-        max_tokens=max_words,
-        output_mode='int',
-        output_sequence_length=maxlen
-    )
-    vectorize_layer.adapt([message])
-
-    # Convert the message into numerical vectors
-    message_vectors = vectorize_layer([message])
-
-    # Add a batch dimension to the message vectors
-    message_vectors = tf.expand_dims(message_vectors, axis=0)
+    tokenizer = Tokenizer(num_words=max_words)
+    tokenizer.fit_on_texts([message])
+    sequences = tokenizer.texts_to_sequences([message])
+    padded_sequences = pad_sequences(sequences, maxlen=maxlen)
 
     try:
-        # Use the model to predict the sentiment of the message
-        predictions = loaded_model.predict(message_vectors)
-
-        # Get the predicted sentiment label
+        predictions = loaded_model.predict(padded_sequences)
         predicted_label = np.argmax(predictions, axis=1)[0]
 
         if predicted_label == 0:
@@ -84,7 +70,6 @@ def predict_sentiment(message):
             return "Neutral Sentiment Detected"
         else:
             return "Positive Sentiment Detected"
-
     except Exception as e:
         return f"Error occurred: {e}"
 
@@ -124,9 +109,11 @@ if uploaded_file is not None:
                     if not user_messages[current_user]:
                         user_messages[current_user] = []
 
-                # Extract English words from the message and add them to the corresponding user's list
-                english_words = extract_english_words(message)
-                user_messages[current_user].extend(english_words)
+                # Preprocess the message
+                message = preprocess_text(message)
+
+                # Add preprocessed message to the corresponding user's list
+                user_messages[current_user].append(message)
 
     # Select user
     selected_user = st.selectbox("Select a user name:", list(user_messages.keys()))
