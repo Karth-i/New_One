@@ -5,6 +5,7 @@ import re
 from collections import defaultdict
 import requests
 from keras.initializers import Orthogonal
+from tensorflow.keras.layers import GRUCell
 
 # Function to extract English words from a text
 def extract_english_words(text):
