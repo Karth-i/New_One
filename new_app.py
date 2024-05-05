@@ -84,10 +84,7 @@ def main():
 
             # Predict sentiment
             sequences = vectorize_layer([" ".join(messages)])
-            if sequences.shape[1] < 200:
-                sequences = tf.pad(sequences, [[0, 0], [0, 200 - sequences.shape[1]]])
-            elif sequences.shape[1] > 200:
-                sequences = sequences[:, :200]
+            sequences = pad_sequences(sequences, maxlen=200, padding='post', truncating='post')
             sentiment_label = np.argmax(model.predict(sequences), axis=1)
 
             st.write(f"Predicted sentiment label: {sentiment_label[0]}")
