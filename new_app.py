@@ -70,9 +70,9 @@ def main():
             response = requests.get(model_url)
             with open("model.h5", "wb") as f:
                 f.write(response.content)
-            model = tf.keras.models.load_model("model.h5", compile=False)
-
+            
             # Fix the recurrent_initializer issue
+            model = tf.keras.models.load_model("model.h5", compile=False)
             for layer in model.layers:
                 if isinstance(layer, tf.keras.layers.GRU):
                     layer.recurrent_initializer = 'glorot_uniform'
