@@ -3,15 +3,11 @@ import tensorflow as tf
 import numpy as np
 import pandas as pd
 import re
-import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 import string
 import streamlit as st
-
-nltk.download("stopwords")
-nltk.download("wordnet")
 
 def preprocess_text(text: str) -> str:
     """Preprocess text for sentiment analysis"""
