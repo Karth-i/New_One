@@ -8,8 +8,6 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.layers import Embedding
 
-from google.colab import drive
-drive.mount('/content/drive')
 
 model_path = 'https://github.com/Karth-i/New_One/blob/main/model1.h5'
 
