@@ -4,7 +4,8 @@ import numpy as np
 import re
 from collections import defaultdict
 import requests
-import io
+import tempfile
+import os
 
 # Function to extract English words from a text
 def extract_english_words(text):
@@ -68,7 +69,11 @@ def main():
             # Load model
             model_url = "https://github.com/Karth-i/New_One/raw/main/model1.h5"  # Changed
             response = requests.get(model_url)
-            model = tf.keras.models.load_model(io.BytesIO(response.content), compile=False)  # Changed
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".h5") as tmp:
+                tmp.write(response.content)
+                tmp_model_path = tmp.name
+            model = tf.keras.models.load_model(tmp_model_path, compile=False)  # Changed
+            os.unlink(tmp_model_path)
 
             # Fetch and preprocess messages
             messages = user_messages[selected_user]
