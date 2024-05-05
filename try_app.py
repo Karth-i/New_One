@@ -28,7 +28,7 @@ with open("glove.6B.50d.txt", "wb") as f:
 
 # Load GloVe embeddings
 embeddings_index = {}
-with open("glove.6B.50d.txt") as f:
+with open("glove.6B.50d.txt", encoding='utf-8') as f:
     for line in f:
         values = line.split()
         word = values[0]
