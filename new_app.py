@@ -4,7 +4,6 @@ import numpy as np
 import pandas as pd
 import re
 from collections import defaultdict
-#nltk.download('punkt')
 
 # Function to extract English words from a text
 def extract_english_words(text):
@@ -16,11 +15,12 @@ def extract_english_words(text):
     return english_words
 
 # Function to process the WhatsApp chat history file
-def process_whatsapp_file(file_path):
+def process_whatsapp_file(uploaded_file):
     user_messages = defaultdict(list)
-    with open(file_path, 'r', encoding='utf-8') as file:
-        # Read the lines of the WhatsApp chat history file
-        lines = file.readlines()
+    # Read the content of the uploaded file
+    content = uploaded_file.getvalue().decode("utf-8")
+    # Split the content into lines
+    lines = content.splitlines()
 
     current_user = None
     for line in lines:
@@ -47,13 +47,6 @@ def process_whatsapp_file(file_path):
 
     return user_messages
 
-# Load the pre-trained model from GitHub
-@st.cache(allow_output_mutation=True)
-def load_model_from_github():
-    model_url = 'https://github.com/Karth-i/New_One/blob/main/model1.h5'
-    model = tf.keras.models.load_model(model_url)
-    return model
-
 # Main function
 def main():
     st.title('WhatsApp Chat Sentiment Analyzer')
@@ -72,7 +65,8 @@ def main():
             st.subheader(f"Sentiment Analysis for {selected_user}'s messages")
 
             # Load model
-            model = load_model_from_github()
+            model_url = 'https://github.com/YOUR_USERNAME/YOUR_REPOSITORY/raw/main/model.h5'
+            model = tf.keras.models.load_model(model_url)
 
             # Fetch and preprocess messages
             messages = user_messages[selected_user]
