@@ -31,6 +31,8 @@ embeddings_index = {}
 with open("glove.6B.50d.txt", encoding='utf-8') as f:
     for line in f:
         values = line.split()
+        if len(values) == 0:
+            continue
         word = values[0]
         coefs = np.asarray(values[1:], dtype='float32')
         embeddings_index[word] = coefs
