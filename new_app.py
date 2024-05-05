@@ -1,7 +1,6 @@
 import streamlit as st
 import tensorflow as tf
 import numpy as np
-import pandas as pd
 import re
 from collections import defaultdict
 import requests
@@ -67,9 +66,9 @@ def main():
             st.subheader(f"Sentiment Analysis for {selected_user}'s messages")
 
             # Load model
-            model_url = "https://github.com/Karth-i/New_One/blob/8e424d1d819e0acaf668630ccf1aee06b38e8b61/model1.h5"
+            model_url = "https://github.com/Karth-i/New_One/raw/main/model1.h5"  # Changed
             response = requests.get(model_url)
-            model = tf.keras.models.load_model(io.BytesIO(response.content), compile=False)
+            model = tf.keras.models.load_model(io.BytesIO(response.content), compile=False)  # Changed
 
             # Fetch and preprocess messages
             messages = user_messages[selected_user]
