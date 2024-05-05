@@ -4,7 +4,6 @@ import numpy as np
 import re
 from collections import defaultdict
 import requests
-import tempfile
 import os
 
 # Function to extract English words from a text
@@ -67,13 +66,11 @@ def main():
             st.subheader(f"Sentiment Analysis for {selected_user}'s messages")
 
             # Load model
-            model_url = "https://github.com/Karth-i/New_One/raw/main/model1.h5"  # Changed
+            model_url = "https://github.com/Karth-i/New_One/raw/9ba3e1c71a83bf70df186c342b837a9745721849/model1.h5"
             response = requests.get(model_url)
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".h5") as tmp:
-                tmp.write(response.content)
-                tmp_model_path = tmp.name
-            model = tf.keras.models.load_model(tmp_model_path, compile=False)  # Changed
-            os.unlink(tmp_model_path)
+            with open("model.h5", "wb") as f:
+                f.write(response.content)
+            model = tf.keras.models.load_model("model.h5", compile=False)
 
             # Fetch and preprocess messages
             messages = user_messages[selected_user]
