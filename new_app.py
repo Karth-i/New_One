@@ -4,8 +4,6 @@ import numpy as np
 import pandas as pd
 import re
 from collections import defaultdict
-import nltk
-
 #nltk.download('punkt')
 
 # Function to extract English words from a text
