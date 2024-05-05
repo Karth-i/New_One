@@ -67,7 +67,7 @@ def main():
             st.subheader(f"Sentiment Analysis for {selected_user}'s messages")
 
             # Load model
-            model_url = "https://github.com/Karth-i/New_One/blob/main/model1.h5"
+            model_url = "https://github.com/Karth-i/New_One/blob/8e424d1d819e0acaf668630ccf1aee06b38e8b61/model1.h5"
             response = requests.get(model_url)
             model = tf.keras.models.load_model(io.BytesIO(response.content), compile=False)
 
