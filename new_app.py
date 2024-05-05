@@ -5,6 +5,7 @@ import pandas as pd
 import re
 from collections import defaultdict
 import requests
+import os
 
 # Function to extract English words from a text
 def extract_english_words(text):
@@ -89,6 +90,9 @@ def main():
             sentiment_label = np.argmax(model.predict(sequences), axis=1)
 
             st.write(f"Predicted sentiment label: {sentiment_label[0]}")
+
+            # Delete the model file
+            os.remove(model_path)
 
 # Run the main function
 if __name__ == '__main__':
