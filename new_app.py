@@ -9,6 +9,12 @@ from nltk.tokenize import word_tokenize
 import string
 import streamlit as st
 
+# Download NLTK resources
+import nltk
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
+
 def preprocess_text(text: str) -> str:
     """Preprocess text for sentiment analysis"""
     # Remove punctuation
@@ -67,22 +73,10 @@ def main():
     # Get user input
     user_input = st.text_input("Enter a message:")
     if user_input:
-        # Preprocess text
-        text = preprocess_text(user_input)
-        # Tokenize text
-        tokenizer = tf.keras.preprocessing.text.Tokenizer()
-        tokenizer.fit_on_texts(["start", text, "end"])
-        sequence = tokenizer.texts_to_sequences(["start", text, "end"])
-        sequence = tf.keras.preprocessing.sequence.pad_sequences(sequence, padding="post")
         # Predict sentiment
-        sentiment = model.predict(sequence.reshape(1, -1))
-        # Map sentiment to label
-        if sentiment > 0.5:
-            label = "Positive"
-        else:
-            label = "Negative"
+        sentiment = predict_sentiment(model, user_input)
         # Display sentiment
-        st.write(f"Sentiment: {label}")
+        st.write(f"Sentiment: {sentiment}")
 
 if __name__ == "__main__":
     main()
