@@ -7,10 +7,9 @@ from tensorflow import keras
 import zipfile
 import os
 import requests
-from keras.initializers import glorot_uniform, Orthogonal
 
 # Set custom objects for initializers
-custom_objects = {'Orthogonal': Orthogonal, 'glorot_uniform': glorot_uniform,'tf': tf, 'gru': gru}
+custom_objects = {'Orthogonal': tf.keras.initializers.Orthogonal, 'glorot_uniform': tf.keras.initializers.glorot_uniform, 'tf': tf, 'gru': tf.keras.layers.GRU}
 
 # Download and extract the model zip file
 model_h5_url = "https://github.com/Karth-i/New_One/raw/main/model1.h5"
@@ -61,13 +60,12 @@ def predict_sentiment(message):
     max_words = 9000
     maxlen = 200
 
+    # Define TextVectorization layer
     vectorize_layer = tf.keras.layers.TextVectorization(
         max_tokens=max_words,
         output_mode='int',
         output_sequence_length=maxlen
     )
-
-    # Adapt the layer to the new message
     vectorize_layer.adapt([message])
 
     # Convert the message into numerical vectors
