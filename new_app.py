@@ -4,6 +4,7 @@ import numpy as np
 import re
 from collections import defaultdict
 import requests
+import os
 
 # Function to extract English words from a text
 def extract_english_words(text):
@@ -47,17 +48,6 @@ def process_whatsapp_file(uploaded_file):
 
     return user_messages
 
-# Define the model architecture
-def get_model():
-    model = tf.keras.models.Sequential([
-        tf.keras.layers.Input(shape=(200,), dtype="int32"),
-        tf.keras.layers.Embedding(9000, 128),
-        tf.keras.layers.Bidirectional(tf.keras.layers.GRU(64)),
-        tf.keras.layers.Dense(64, activation='relu'),
-        tf.keras.layers.Dense(1, activation='sigmoid')
-    ])
-    return model
-
 # Main function
 def main():
     st.title('WhatsApp Chat Sentiment Analyzer')
@@ -78,15 +68,17 @@ def main():
             # Load model
             model_url = "https://github.com/Karth-i/New_One/raw/9ba3e1c71a83bf70df186c342b837a9745721849/model1.h5"
             response = requests.get(model_url)
-            with open("model_weights.h5", "wb") as f:
+            with open("model.h5", "wb") as f:
                 f.write(response.content)
             
-            # Define model architecture
-            model = get_model()
-            
-            # Load model weights
-            model.load_weights("model_weights.h5")
-            
+            # Load model
+            model = tf.keras.models.load_model("model.h5", compile=False)
+
+            # Fix the recurrent_initializer issue
+            for layer in model.layers:
+                if isinstance(layer, tf.keras.layers.GRU):
+                    layer.recurrent_initializer = 'glorot_uniform'
+
             # Fetch and preprocess messages
             messages = user_messages[selected_user]
 
