@@ -8,8 +8,6 @@ import zipfile
 import os
 import requests
 
-# Set custom objects for initializers
-
 # Download and extract the model zip file
 model_h5_url = "https://github.com/Karth-i/New_One/raw/main/model1.h5"
 model_dir = "model1"
