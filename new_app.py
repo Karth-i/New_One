@@ -54,7 +54,7 @@ def main():
         if selected_user:
             st.subheader(f"Sentiment Analysis for {selected_user}'s messages")
 
-            model_url = "https://github.com/Karth-i/New_One/raw/main/model1%20new.zip"
+            model_url = "https://github.com/Karth-i/New_One/blob/main/model1%20new.zip"
             response = requests.get(model_url)
             with open("model1_new.zip", "wb") as f:
                 f.write(response.content)
