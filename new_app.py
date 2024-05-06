@@ -57,10 +57,10 @@ def main():
 
             model_url = "https://github.com/Karth-i/New_One/raw/main/model1%20new.zip"
             response = requests.get(model_url)
-            with open("model1.h5", "wb") as f:
+            with open("model1 new.zip", "wb") as f:
                 f.write(response.content)
 
-            model = tf.keras.models.load_model("model1.h5")
+            model = tf.keras.models.load_model("model1 new.zip")
 
             messages = user_messages[selected_user]
 
