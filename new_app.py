@@ -6,9 +6,8 @@ import nltk
 from collections import defaultdict
 import requests
 from tensorflow.keras.layers import GRU, Embedding, Bidirectional, Dense, Dropout
-from tensorflow.keras.layers import TextVectorization
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.regularizers import OrthogonalRegularizer
+from tensorflow.keras.layers.experimental.preprocessing import TextVectorization
+
 # Function to extract English words from a text
 def extract_english_words(text):
     english_words = []
@@ -56,21 +55,12 @@ def main():
         if selected_user:
             st.subheader(f"Sentiment Analysis for {selected_user}'s messages")
 
-            model_url = "https://github.com/Karth-i/New_One/raw/9ba3e1c71a83bf70df186c342b837a9745721849/model1.h5"
+            model_url = "https://github.com/Karth-i/New_One/raw/main/model1%20new.zip"
             response = requests.get(model_url)
             with open("model1.h5", "wb") as f:
                 f.write(response.content)
-            regularizer = OrthogonalRegularizer()
 
-            model = tf.keras.models.Sequential([
-                Embedding(9000, 128, input_length=200, embeddings_regularizer=regularizer),
-                Bidirectional(GRU(64, kernel_regularizer=regularizer, recurrent_regularizer=regularizer)),
-                Dense(64, activation='relu', kernel_regularizer=regularizer),
-                Dropout(0.5),
-                Dense(3, activation='softmax')  # Changed output dimension to match the number of classes in your model
-            ])
-
-            model.load_weights("model1.h5")
+            model = tf.keras.models.load_model("model1.h5")
 
             messages = user_messages[selected_user]
 
@@ -82,7 +72,7 @@ def main():
             vectorize_layer.adapt([" ".join(messages)])
 
             sequences = vectorize_layer([" ".join(messages)])
-            sequences = pad_sequences(sequences, maxlen=200, padding='post', truncating='post')
+            sequences = np.array(sequences)
             
             sentiment_label = np.argmax(model.predict(sequences), axis=1)
 
