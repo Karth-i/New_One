@@ -6,7 +6,7 @@ import nltk
 from collections import defaultdict
 import requests
 from tensorflow.keras.layers import GRU, Embedding, Bidirectional, Dense, Dropout
-from tensorflow.keras.layers.experimental.preprocessing import TextVectorization
+from tensorflow.keras.layers import TextVectorization
 
 # Function to extract English words from a text
 def extract_english_words(text):
