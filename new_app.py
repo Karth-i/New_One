@@ -7,7 +7,7 @@ import requests
 from tensorflow.keras.layers import GRUCell
 from tensorflow.keras.layers import TextVectorization
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensoflow.keras.regularizers import OrthogonalRegularizer
+from tensorflow.keras.regularizers import OrthogonalRegularizer
 # Function to extract English words from a text
 def extract_english_words(text):
     english_words = []
