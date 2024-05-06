@@ -2,6 +2,7 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 import re
+import nltk
 from collections import defaultdict
 import requests
 from tensorflow.keras.layers import GRU, Embedding, Bidirectional, Dense, Dropout
