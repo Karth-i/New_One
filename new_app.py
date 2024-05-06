@@ -4,7 +4,7 @@ import numpy as np
 import re
 from collections import defaultdict
 import requests
-from tensorflow.keras.layers import GRUCell
+from tensorflow.keras.layers import GRU, Embedding, Bidirectional, Dense, Dropout
 from tensorflow.keras.layers import TextVectorization
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.regularizers import OrthogonalRegularizer
@@ -60,7 +60,17 @@ def main():
             response = requests.get(model_url)
             with open("model1.h5", "wb") as f:
                 f.write(response.content)
-            model = tf.keras.models.load_model("model1.h5")
+            regularizer = OrthogonalRegularizer()
+
+            model = tf.keras.models.Sequential([
+                Embedding(9000, 128, input_length=200, embeddings_regularizer=regularizer),
+                Bidirectional(GRU(64, kernel_regularizer=regularizer, recurrent_regularizer=regularizer)),
+                Dense(64, activation='relu', kernel_regularizer=regularizer),
+                Dropout(0.5),
+                Dense(3, activation='softmax')
+            ])
+
+            model.load_weights("model1.h5")
 
             messages = user_messages[selected_user]
 
@@ -74,21 +84,6 @@ def main():
             sequences = vectorize_layer([" ".join(messages)])
             sequences = pad_sequences(sequences, maxlen=200, padding='post', truncating='post')
             
-            # Apply OrthogonalRegularizer to applicable layers
-            regularizer = OrthogonalRegularizer()
-            
-            model = tf.keras.models.Sequential([
-                tf.keras.layers.Embedding(9000, 128, input_length=200, embeddings_regularizer=regularizer),
-                tf.keras.layers.Bidirectional(tf.keras.layers.GRU(64, kernel_regularizer=regularizer, recurrent_regularizer=regularizer)),
-                tf.keras.layers.Dense(64, activation='relu', kernel_regularizer=regularizer),
-                tf.keras.layers.Dropout(0.5),
-                tf.keras.layers.Dense(3, activation='softmax')
-            ])
-
-            model.compile(loss='sparse_categorical_crossentropy',
-                          optimizer='adam',
-                          metrics=['accuracy'])
-
             sentiment_label = np.argmax(model.predict(sequences), axis=1)
 
             st.write(f"Predicted sentiment label: {sentiment_label[0]}")
