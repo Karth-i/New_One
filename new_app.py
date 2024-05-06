@@ -76,7 +76,7 @@ def main():
             message_vectors = vectorize_layer([" ".join(messages)])
             message_vectors = tf.reshape(message_vectors, (1, 200))
 
-            sentiment_label = np.argmax(model.predict(message_vectors), axis=1
+            sentiment_label = np.argmax(model.predict(message_vectors), axis=1)
 
             st.write(f"Predicted sentiment label: {sentiment_label[0]}")
 
