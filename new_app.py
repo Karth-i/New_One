@@ -30,7 +30,7 @@ def process_whatsapp_file(uploaded_file):
                 user = user_parts[0].strip()
                 message = ': '.join(user_parts[1:]).strip()
 
-                if user!= current_user:
+                if user != current_user:
                     current_user = user
                     if not user_messages[current_user]:
                         user_messages[current_user] = []
@@ -73,10 +73,10 @@ def main():
             )
             vectorize_layer.adapt([" ".join(messages)])
 
-            sequences = vectorize_layer([" ".join(messages)])
-            sequences = np.array(sequences)
-            
-            sentiment_label = np.argmax(model.predict(sequences), axis=1)
+            message_vectors = vectorize_layer([" ".join(messages)])
+            message_vectors = tf.reshape(message_vectors, (1, 200))
+
+            sentiment_label = np.argmax(model.predict(message_vectors), axis=1
 
             st.write(f"Predicted sentiment label: {sentiment_label[0]}")
 
