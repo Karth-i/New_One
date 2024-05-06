@@ -67,7 +67,7 @@ def main():
                 Bidirectional(GRU(64, kernel_regularizer=regularizer, recurrent_regularizer=regularizer)),
                 Dense(64, activation='relu', kernel_regularizer=regularizer),
                 Dropout(0.5),
-                Dense(3, activation='softmax')
+                Dense(4, activation='softmax')  # Changed output dimension to match the number of classes in your model
             ])
 
             model.load_weights("model1.h5")
@@ -87,6 +87,10 @@ def main():
             sentiment_label = np.argmax(model.predict(sequences), axis=1)
 
             st.write(f"Predicted sentiment label: {sentiment_label[0]}")
+
+if __name__ == '__main__':
+    main()
+
 
 if __name__ == '__main__':
     main()
