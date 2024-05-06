@@ -5,7 +5,6 @@ import re
 from collections import defaultdict
 import requests
 from tensorflow.keras.layers import GRUCell
-from tensorflow.keras.initializers import orthogonal
 from tensorflow.keras.layers import TextVectorization
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensoflow.keras.regularizers import OrthogonalRegularizer
