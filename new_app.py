@@ -9,7 +9,6 @@ from tensorflow.keras.layers import GRU, Embedding, Bidirectional, Dense, Dropou
 from tensorflow.keras.layers import TextVectorization
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.regularizers import OrthogonalRegularizer
-nltk.download("punkt")
 # Function to extract English words from a text
 def extract_english_words(text):
     english_words = []
