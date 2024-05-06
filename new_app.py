@@ -62,7 +62,7 @@ def main():
             with zipfile.ZipFile("model1_new.zip", 'r') as zip_ref:
                 zip_ref.extractall("model")
 
-            model = tf.keras.models.load_model("model")
+            model = tf.keras.models.load_model("model", compile=False)
 
             messages = user_messages[selected_user]
 
