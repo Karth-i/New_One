@@ -1,7 +1,7 @@
 streamlit
 numpy
 tensorflow
-transformers
+transformers == 3.0.2
 torch
 tokenizers
 nltk
