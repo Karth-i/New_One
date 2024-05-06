@@ -2,11 +2,10 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 import re
-import nltk
 from collections import defaultdict
 import requests
-from tensorflow.keras.layers import GRU, Embedding, Bidirectional, Dense, Dropout
-from tensorflow.keras.layers import TextVectorization
+import zipfile
+from tensorflow.keras.layers import GRU, Embedding, Bidirectional, Dense, Dropout, TextVectorization
 
 # Function to extract English words from a text
 def extract_english_words(text):
@@ -57,10 +56,13 @@ def main():
 
             model_url = "https://github.com/Karth-i/New_One/raw/main/model1%20new.zip"
             response = requests.get(model_url)
-            with open("model1 new.zip", "wb") as f:
+            with open("model1_new.zip", "wb") as f:
                 f.write(response.content)
 
-            model = tf.keras.models.load_model("model1 new.zip")
+            with zipfile.ZipFile("model1_new.zip", 'r') as zip_ref:
+                zip_ref.extractall("model")
+
+            model = tf.keras.models.load_model("model")
 
             messages = user_messages[selected_user]
 
