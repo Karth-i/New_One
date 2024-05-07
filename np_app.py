@@ -15,7 +15,10 @@ response = requests.get(url)
 
 with open("new_np1.keras", "wb") as f:
     f.write(response.content)
-model = tf.keras.models.load_model("new_np1.keras")
+
+custom_objects = {'Orthogonal': tf.keras.initializers.Orthogonal}
+model = tf.keras.models.load_model("new_np1.keras", custom_objects=custom_objects)
+
 # Create the Streamlit interface
 st.title('User Sentiment Analysis')
 
