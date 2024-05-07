@@ -2,7 +2,7 @@ import streamlit as st
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 import numpy as np
-import request
+import requests
 
 # Load the saved model
 url = 'https://github.com/Karth-i/New_One/raw/main/new_np1.keras'
