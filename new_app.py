@@ -4,8 +4,6 @@ import numpy as np
 import re
 from collections import defaultdict
 import requests
-import zipfile
-from tensorflow.keras.layers import GRU, Embedding, Bidirectional, Dense, Dropout, TextVectorization
 
 # Function to extract English words from a text
 def extract_english_words(text):
@@ -54,19 +52,16 @@ def main():
         if selected_user:
             st.subheader(f"Sentiment Analysis for {selected_user}'s messages")
 
-            model_url = "https://github.com/Karth-i/New_One/blob/main/model1%20new.zip"
+            model_url = "https://github.com/Karth-i/New_One/raw/4f7e15e9b05effd4c453497c3ec98c61b1ee1485/model1.h5"
             response = requests.get(model_url)
-            with open("model1_new.zip", "wb") as f:
+            with open("model1.h5", "wb") as f:
                 f.write(response.content)
 
-            with zipfile.ZipFile("model1 new.zip", 'r') as zip_ref:
-                zip_ref.extractall("model1 new.zip")
-
-            model = tf.keras.models.load_model("model1 new.zip", compile=False)
+            model = tf.keras.models.load_model("model1.h5")
 
             messages = user_messages[selected_user]
 
-            vectorize_layer = TextVectorization(
+            vectorize_layer = tf.keras.layers.TextVectorization(
                 max_tokens=9000,
                 output_mode='int',
                 output_sequence_length=200
