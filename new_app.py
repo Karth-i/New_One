@@ -4,7 +4,7 @@ import numpy as np
 import re
 from collections import defaultdict
 import requests
-
+from tensorflow.keras.initializers import Orthogonal
 # Function to extract English words from a text
 def extract_english_words(text):
     english_words = []
