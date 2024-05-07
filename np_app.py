@@ -9,9 +9,9 @@ import requests
 from tensorflow.keras.initializers import Orthogonal
 # Load the saved model
 url = 'https://github.com/Karth-i/New_One/raw/main/new_np1.keras'
-model = load_model(url)
+# model = load_model(url)
 # model = load_model('https://github.com/Karth-i/New_One/blob/main/new_np1.keras')
-response = requests.get(model_url)
+response = requests.get(url)
 
 with open("new_np1.keras", "wb") as f:
     f.write(response.content)
