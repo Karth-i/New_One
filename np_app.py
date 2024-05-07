@@ -4,7 +4,9 @@ from tensorflow.keras.models import load_model
 import numpy as np
 
 # Load the saved model
-model = load_model('https://github.com/Karth-i/New_One/blob/main/new_np1.keras')
+url = 'https://github.com/Karth-i/New_One/raw/main/new_np1.keras'
+model = load_model(url)
+# model = load_model('https://github.com/Karth-i/New_One/blob/main/new_np1.keras')
 
 # Create the Streamlit interface
 st.title('User Sentiment Analysis')
