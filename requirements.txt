@@ -1,6 +1,6 @@
 numpy
 streamlit
-tensorflow==2.8.0
+tensorflow
 transformers
 torch
 tokenizers
